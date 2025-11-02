@@ -1,42 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather/cubits/get_weather_cubit/get_weather_cubit.dart';
 
 class WeatherInfoBody extends StatelessWidget {
   const WeatherInfoBody({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var weatherModel = BlocProvider.of<GetWeatherCubit>(context).weatherModel;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            "City",
+          Text(
+            weatherModel.cityName,
             style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
           ),
-          const Text(
-            "Updated at",
+          Text(
+            "Updated at ${weatherModel.date.hour}:${weatherModel.date.minute} ",
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.asset("assets/images/"),
+              Image.network("https:${weatherModel.image}"),
               Text(
-                "18",
+                weatherModel.temp.toString(),
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
               Column(
                 children: [
-                  const Text("Max temp :", style: TextStyle(fontSize: 16)),
-                  const Text("Min temp :", style: TextStyle(fontSize: 16)),
+                  Text(
+                    "Max temp : ${weatherModel.maxTemp.round()}",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    "Min temp :${weatherModel.minTemp.round()}",
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ],
               ),
             ],
           ),
           const SizedBox(height: 32),
-          const Text(
-            "Rain",
+          Text(
+            weatherModel.weatherCondition,
             style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
           ),
         ],
